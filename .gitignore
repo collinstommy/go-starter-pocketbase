@@ -2,3 +2,5 @@
 /pb_public
 *_templ.go
 main
+.env
+build-errors.log

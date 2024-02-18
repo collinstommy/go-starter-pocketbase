@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"tea-time/components"
-	"tea-time/data"
 	"tea-time/template"
 
 	"github.com/labstack/echo/v5"
@@ -13,12 +11,6 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
-
-type Playlist struct {
-	Id        string `db:"id" json:"id"`
-	Name      string `db:"name" json:"name"`
-	SpotifyId string `db:"SpotifyId" json:"SpotifyId"`
-}
 
 func main() {
 	app := pocketbase.New()
@@ -32,13 +24,6 @@ func main() {
 		e.Router.GET("/hello/:name", func(c echo.Context) error {
 			name := c.PathParam("name")
 			component := components.Index(name)
-
-			playlists, err := data.GetAllPlaylists(app.DB().Builder)
-
-			if err != nil {
-				fmt.Println(err)
-			}
-			fmt.Println(playlists)
 
 			return template.Html(c, component)
 		})
