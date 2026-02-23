@@ -4,9 +4,7 @@ import (
 	"log"
 	"os"
 	"tea-time/components"
-	"tea-time/template"
 
-	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -15,23 +13,27 @@ import (
 func main() {
 	app := pocketbase.New()
 
-	// serves static files from the provided public dir (if exists)
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		template.NewTemplateRenderer(e.Router)
+	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+		// Serve static files
+		se.Router.GET("/{path...}", apis.Static(os.DirFS("./pb_public"), false))
 
-		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
+		// Other routes
+		se.Router.GET("/hello/{name}", helloRoute)
 
-		e.Router.GET("/hello/:name", func(c echo.Context) error {
-			name := c.PathParam("name")
-			component := components.Index(name)
-
-			return template.Html(c, component)
-		})
-
-		return nil
+		return se.Next()
 	})
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func helloRoute(e *core.RequestEvent) error {
+	name := e.Request.PathValue("name")
+
+	component := components.Index(name)
+
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	return component.Render(e.Request.Context(), e.Response)
 }
