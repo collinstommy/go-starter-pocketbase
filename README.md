@@ -10,23 +10,23 @@ This is a starter template for building web applications using Go, Pocketbase, a
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your system:
+Before you begin, ensure you have the following tools installed on your system:
 
-1. [Air](https://github.com/cosmtrek/air): A live reload tool for Go applications.
-2. [Go](https://golang.org/): The Go programming language.
-3. [Node.js](https://nodejs.org/): JavaScript runtime for building and running frontend tools.
+1. [Go](https://golang.org/): The Go programming language, required to build and run the application.
 
 ## Installation
 
 Follow these steps to set up the project:
 
-1. **Install the Tailwind CSS CLI globally:**
+1. **Install required tools:**
 
    ```sh
-   npm install -g @tailwindcss/cli
+   go install github.com/air-verse/air@latest
+   go install github.com/a-h/templ/cmd/templ@latest
+   go install github.com/hookenz/gotailwind/v4@latest
    ```
 
-2. **Download Go dependencies:**
+2. **Download project dependencies:**
    ```sh
    go mod tidy
    ```
