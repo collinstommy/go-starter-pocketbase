@@ -1,5 +1,5 @@
 [build]
-pre_cmd = ["templ generate","npx tailwindcss -i ./client/main.css -o ./pb_public/tailwind.css"]
+pre_cmd = ["templ generate","gotailwind -i ./client/main.css -o ./pb_public/tailwind.css --minify"]
 # It's not necessary to trigger build each time file changes if it's too frequent.
 delay = 1000
 
